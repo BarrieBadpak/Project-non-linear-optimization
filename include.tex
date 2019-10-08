@@ -1,0 +1,44 @@
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath,amssymb,amscd,latexsym,dsfont}
+\usepackage[english]{babel}
+\usepackage{tabularx,multirow}
+\usepackage{graphicx,color,array}
+\usepackage{float}
+\usepackage{comment,psfrag,cite}
+\usepackage[top=1.75cm,bottom=1.75cm,left=2.0cm,right=2.0cm,footskip=1cm,headheight=3ex,headsep=0.3cm]{geometry}
+%\usepackage{showframe}
+\usepackage[small]{titlesec}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\newcommand{\GL}[1]{{\color{PineGreen} #1}}
+
+\newcommand{\ie}{i.e.,~}
+\newcommand{\eg}{e.g.,~}
+\newcommand{\cf}{cf.~}
+
+\newcommand{\tr}[1]{\mathrm{#1}}
+
+\newcommand{\mr}[3]{\multirow{#1}{#2}{#3}}
+\newcommand{\pending}[1]{{\color{red}{#1}}}
+
+%
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\hypersetup{colorlinks=true,urlcolor=cyan}
+
+\usepackage{fancyhdr}
+\chead{}
+\rhead{\includegraphics[width=1.1cm]{Tue_logo.png}}
+\lhead{\today}
+\cfoot{\thepage}
+
+  %% 1Col Bibliography
+\let\oldthebibliography=\thebibliography
+  \let\endoldthebibliography=\endthebibliography
+  \renewenvironment{thebibliography}[1]%
+  {\scriptsize \renewcommand{\baselinestretch}{0.9}%
+    \begin{oldthebibliography}{#1}%
+    \setlength{\parskip}{0pt}\setlength{\itemsep}{1ex}%
+  }%
+  {\end{oldthebibliography}}

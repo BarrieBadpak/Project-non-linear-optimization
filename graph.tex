@@ -1,0 +1,91 @@
+\begin{tikzpicture}
+\begin{axis}[%
+every axis/.append style={font=\normalsize},
+width=0.6\textwidth,
+height=0.5\textwidth,
+xmin=-5,
+xmax=5,
+xtick={-4,-3,...,3,4},
+xmajorgrids,
+xlabel={Voltage (V)},
+ymin=-5,
+ymax=5,
+ytick={-4,-3,...,3,4},
+ymajorgrids,
+ymode=normal,
+ylabel= {Angle ($^{\circ}$)},
+legend style = {text=black,legend columns=2,legend cell align=left, at={(0.5,1.15)},anchor=north,font=\footnotesize}
+%legend style = {legend columns=1, column sep=8pt, text=black,legend cell align=left, at={(0.5,1.3)},anchor=north,font=\footnotesize}
+]
+% legend columns=2, 
+
+
+\addplot [color=blue!95!black,mark=square*,mark size=1.8pt, thick,mark options={fill=white,solid},thick]
+  table[row sep=crcr]{%
+-4  -3\\
+-3  -2\\
+-2  -1\\
+-1  0\\
+0   0\\
+1   0\\
+2   1\\
+3   2\\
+4   3\\
+  };
+\addlegendentry{V vs. $\theta$};
+
+\addplot [color=black,thick,dotted]
+   table[row sep=crcr]{%
+1   -4\\
+1  -3\\
+1  -2\\
+1  -1\\
+1   0\\
+1   1\\
+1   2\\
+1   3\\
+1   4\\
+  };
+\addlegendentry{Threshold};
+
+\addplot [color=black,thick,dotted]
+   table[row sep=crcr]{%
+-1   -4\\
+-1  -3\\
+-1  -2\\
+-1  -1\\
+-1   0\\
+-1   1\\
+-1   2\\
+-1   3\\
+-1   4\\
+  };
+
+
+
+
+%\node[rotate=-14] at(axis cs: 6.7,6.5e-9) {\small Estimated error floor};
+
+
+%\draw [black!70!black,-,line width=0.2mm] (axis cs: 7.088,1e-7) -- node [midway,below] {}  (axis cs: 7.088,5e-7);
+%\draw [black!70!black,-,line width=0.2mm] (axis cs: 7.385,1e-7) -- node [midway,below] {}  (axis cs: 7.385,5e-7);
+%\draw [black!95!black,<->, line width=0.2mm] (axis cs: 7.088,1e-7) -- node [midway,above] {}  (axis cs: 7.385,1e-7);
+%\draw [black!95!black,->] (axis cs:  7.23,1e-7) -- node [midway,below] {}  (axis cs: 6.95,6e-8);
+%\node at(axis cs: 6.97,1e-7) {\small $0.30$~dB};
+%\draw [black!70!black,-,line width=0.2mm] (axis cs: 6.76,1e-7) -- node [midway,below] {}  (axis cs: 6.76,5e-7);
+%\draw [black!70!black,-,line width=0.2mm] (axis cs: 7.385,1e-7) -- node [midway,below] {}  (axis cs: 7.385,5e-7);
+%\draw [black!70!black,<->, line width=0.2mm] (axis cs: 6.76,2e-7) -- node [midway,above] {}  (axis cs: 7.385,2e-7);
+%\node at(axis cs: 6.65,2e-7) {\small $0.63$~dB};
+
+%HD-FEC
+%\draw [black!70!black,-,thick,dashed] (axis cs: 6.4143,6e-8) -- node [midway,below] {}  (axis cs: 6.4143,3e-2);
+%\draw [black!70!black,<->,line width=0.2mm] (axis cs: 7.088,4e-7) -- node [midway,above] {}  (axis cs: 6.4143,4e-7);
+%\node [rotate=-90] at(axis cs: 6.50,1e-4) {\scriptsize HD-FEC limit};
+%\node  at(axis cs: 6.25,4e-7) {\scriptsize $0.67$~dB};
+%SD-FEC
+%\draw [black!70!black,-,thick,dashed] (axis cs: 5.1715,6e-8) -- node [midway,below] {}  (axis cs: 5.1715,3e-2);
+%\draw [black!70!black,<->,line width=0.2mm] (axis cs: 7.088,9e-7) -- node [midway,above] {}  (axis cs: 5.1715,9e-7);
+%\node  at(axis cs: 5.4,2e-6) {\scriptsize $1.92$~dB};
+%\node [rotate=-90] at(axis cs: 5.25,1e-4) {\scriptsize SD-FEC limit};
+\end{axis}
+\end{tikzpicture}%%

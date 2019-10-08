@@ -1,0 +1,82 @@
+\documentclass[a4paper,10pt]{article}
+\input{include.tex}
+
+\begin{document}
+\pagestyle{fancy}
+
+\title{Project non-linear optimization: optimized current input design
+}
+\author{J.C.P. Hakvoort \& L.M. Verhage\\
+        ID: 1003407 \& 1021437 \\
+        Project group number 24} 
+
+
+\maketitle
+\thispagestyle{empty}
+
+\section{Question 1} \label{sec:question1}
+The first question was to find a current vector $i$ such that $w=w_{desired}$ at a particular coordinate $p_x$. We invoke our sense for creativity and choose $p_x=24$ mm, the group number. We substitute the values for $p_x$ and $p_z$ to construct the coupling matrix for the particular position. Equation (\ref{eq:subsgamma}) displays the calculated coupling matrix rounded to two decimals.
+\begin{equation} \label{eq:subsgamma}
+    \Gamma(24,1)=
+\begin{bmatrix}
+2.76    & -20.33    & 17.56     & 2.76      & -20.33    & 17.56     & 2.76 \\
+-21.87  & 8.54      & 13.33     & -21.87    & 8.54      & 13.33     & -21.87 \\
+2715.13 & -794.97   & -746.70   & 527.74    &	59.42   & 586.31    & -1659.66 
+\end{bmatrix}
+\end{equation}
+
+Next, we bluntly solve the linear system to find an initial solution for the current using our unlicensed Matlab, knowing that it is under-determined. Let us call this solution $$i_0 = \Gamma(24,1)\backslash w_{desired} = \begin{bmatrix} -0.92& -1.46& 0& 0& 0& 0& -0.80 \end{bmatrix} ^T$$. A simple check $w=\Gamma(24,1)i_0$ yields again $w_{desired}$ and we are happy.
+
+\section{Question 2} \label{sec:question2}
+Not yet sure how to proof this formally? Can do it numerically. Probably the rank of this matrix will remain full rank (=3) always, thus you are always able to find a solution.
+
+\section{Question 3} \label{sec:question3}
+We continue from the answer found in Question \ref{sec:question1}. The linear systems contains seven variables and only 3 linear independent equations, which will result in four 'free' variables. Explicitly, these solutions can be found by calculating the null-space of $\Gamma(24,1)$. Each column in equation (\ref{eq:null-space-gamma}) is a basis vector in the null-space. The null-space of $\Gamma(24,1)$ is found to be
+
+\begin{equation} \label{eq:null-space-gamma}
+N(\Gamma(24,1))=
+\begin{bmatrix}
+   -0.4558 &   0.2578 &   0.0373 &  -0.1561\\
+   -0.2661 &  -0.0911 &   0.5197 &  -0.5690\\
+   -0.0811 &   0.5494 &  -0.2216 &  -0.5409\\
+    0.7448 &   0.0764 &   0.2374 &  -0.3646\\
+    0.2369 &   0.7227 &   0.0068 &   0.2995\\
+    0.0520 &   0.0823 &   0.7481 &   0.2713\\
+   -0.3181 &   0.2974 &   0.2518 &   0.2511
+\end{bmatrix}
+\end{equation}
+
+Let us again refer to our favourite number and choose our new free variable to be the $24^{th}$ letter of the alphabet, $x\in \mathbb{R}^4$. All solutions are now given by
+\begin{equation} \label{eq:allsolutions}
+    i(x) = i_0 + N(\Gamma(24,1))x
+\end{equation}
+and notice that there are infinitely many solutions. 
+
+\noindent \textbf{Proof}
+We want to proof that $i(x)$ satisfies $\Gamma(24,1)i(x) = w_{desired}$ \hspace{1ex} $\forall x$. 
+\begin{align}
+    \Gamma(24,1)i(x) &= w_{desired} \\
+    \Gamma(24,1)(i_0 + N(\Gamma(24,1))x) &= w_{desired} \\
+    \Gamma(24,1)i_0 + \Gamma(24,1)N(\Gamma(24,1))x &= w_{desired} \label{eq:proof1}
+\end{align}
+Now, by definition the null-space is spanned by vectors $x$ that satisfy $Ax=0$. $N(\Gamma(24,1))x$ is a linear combination of these vectors and hence the term $\Gamma(24,1)N(\Gamma(24,1))x$ in (\ref{eq:proof1}) equals zero. The resulting expression $\Gamma(24,1)i_0= w_{desired}$ was proven to be a valid solution in question \ref{sec:question1}. This concludes the proof.
+
+\section{Question 4} \label{sec:question4}
+We now formulate the problem as an optimization problem.
+
+\begin{equation}
+\begin{array}{ll@{}ll}
+\text{minimize}  & P(i)=i(x)^TRi(x)\\
+\text{subject to}& \Gamma(p_x,p_z)i(x)=w_{desired}
+\end{array}
+\end{equation}
+Note that, all solutions from question \ref{sec:question3} are parameterized in $x$ and they satisfy the constraint $\Gamma(p_x,p_z)i(x)=w_{desired} \forall x$. Therefore, the problem is an unconstrained optimization problem, since we can choose $x \in \mathbb(R)^4$. 
+
+\section{Question 5}
+\cite{minimax}
+
+\bibliographystyle{IEEEtran}
+\bibliography{bib}
+
+\end{document}
+
