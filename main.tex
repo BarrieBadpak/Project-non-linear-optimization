@@ -15,7 +15,7 @@
 \thispagestyle{empty}
 
 \section{Question 1} \label{sec:question1}
-The first question was to find a current vector $i$ such that $w=w_{desired}$ at a particular coordinate $p_x$. We invoke our sense for creativity and choose $p_x=24$ mm, the group number. We substitute the values for $p_x$ and $p_z$ to construct the coupling matrix for the particular position. Equation (\ref{eq:subsgamma}) displays the calculated coupling matrix rounded to two decimals.
+The first question was to find a current vector $i$ such that $w=w_{desired}$ at a particular coordinate $p_x$. We invoke our sense of creativity and choose $p_x=24$ mm, the group number. We substitute the values for $p_x$ and $p_z$ to construct the coupling matrix for the particular position. Equation (\ref{eq:subsgamma}) displays the calculated coupling matrix rounded to two decimals.
 \begin{equation} \label{eq:subsgamma}
     \Gamma(24,1)=
 \begin{bmatrix}
@@ -25,16 +25,20 @@ The first question was to find a current vector $i$ such that $w=w_{desired}$ at
 \end{bmatrix}
 \end{equation}
 
-Next, we bluntly solve the linear system to find an initial solution for the current using our unlicensed Matlab, knowing that it is under-determined. Let us call this solution $$i_0 = \Gamma(24,1)\backslash w_{desired} = \begin{bmatrix} -0.92& -1.46& 0& 0& 0& 0& -0.80 \end{bmatrix} ^T$$. A simple check $w=\Gamma(24,1)i_0$ yields again $w_{desired}$ and we are happy.
+Next, we bluntly solve the linear system to find an initial solution for the current using our unlicensed Matlab, knowing that it is under-determined. Let us call this solution 
+\begin{equation} \label{eq:i_0}
+i_0 = \Gamma(24,1)\backslash w_{desired} = \begin{bmatrix} -0.92& -1.46& 0& 0& 0& 0& -0.80 \end{bmatrix} ^T 
+\end{equation}
+A simple check $w=\Gamma(24,1)i_0$ yields again $w_{desired}$ and we are happy.
 
 \section{Question 2} \label{sec:question2}
 Not yet sure how to proof this formally? Can do it numerically. Probably the rank of this matrix will remain full rank (=3) always, thus you are always able to find a solution.
 
 \section{Question 3} \label{sec:question3}
-We continue from the answer found in Question \ref{sec:question1}. The linear systems contains seven variables and only 3 linear independent equations, which will result in four 'free' variables. Explicitly, these solutions can be found by calculating the null-space of $\Gamma(24,1)$. Each column in equation (\ref{eq:null-space-gamma}) is a basis vector in the null-space. The null-space of $\Gamma(24,1)$ is found to be
+We continue from the answer found in Question \ref{sec:question1}. The linear systems contains seven variables and only 3 linear independent equations, which will result in four 'free' variables. Explicitly, these solutions can be found by calculating the kernel of $\Gamma(24,1)$. Each column in equation (\ref{eq:null-space-gamma}) is a basis vector in the kernel. The kernel of $\Gamma(24,1)$ is found to be
 
 \begin{equation} \label{eq:null-space-gamma}
-N(\Gamma(24,1))=
+\text{Ker}(\Gamma(24,1))=
 \begin{bmatrix}
    -0.4558 &   0.2578 &   0.0373 &  -0.1561\\
    -0.2661 &  -0.0911 &   0.5197 &  -0.5690\\
@@ -48,32 +52,93 @@ N(\Gamma(24,1))=
 
 Let us again refer to our favourite number and choose our new free variable to be the $24^{th}$ letter of the alphabet, $x\in \mathbb{R}^4$. All solutions are now given by
 \begin{equation} \label{eq:allsolutions}
-    i(x) = i_0 + N(\Gamma(24,1))x
+    i(x) = i_0 + \eta(24,1)x
 \end{equation}
-and notice that there are infinitely many solutions. 
+where $\eta(24,1) = \text{Ker}(\Gamma(24,1))$. Notice that there are infinitely many solutions. 
 
 \noindent \textbf{Proof}
 We want to proof that $i(x)$ satisfies $\Gamma(24,1)i(x) = w_{desired}$ \hspace{1ex} $\forall x$. 
 \begin{align}
     \Gamma(24,1)i(x) &= w_{desired} \\
-    \Gamma(24,1)(i_0 + N(\Gamma(24,1))x) &= w_{desired} \\
-    \Gamma(24,1)i_0 + \Gamma(24,1)N(\Gamma(24,1))x &= w_{desired} \label{eq:proof1}
+    \Gamma(24,1)(i_0 + \eta(24,1)x) &= w_{desired} \\
+    \Gamma(24,1)i_0 + \Gamma(24,1)\eta(24,1)x &= w_{desired} \label{eq:proof1}
 \end{align}
-Now, by definition the null-space is spanned by vectors $x$ that satisfy $Ax=0$. $N(\Gamma(24,1))x$ is a linear combination of these vectors and hence the term $\Gamma(24,1)N(\Gamma(24,1))x$ in (\ref{eq:proof1}) equals zero. The resulting expression $\Gamma(24,1)i_0= w_{desired}$ was proven to be a valid solution in question \ref{sec:question1}. This concludes the proof.
+Now, by definition the null-space is spanned by vectors $x$ that satisfy $Ax=0$. $\eta(24,1)x$ is a linear combination of these vectors and hence the term $\Gamma(24,1)\eta(24,1)x$ in (\ref{eq:proof1}) equals zero. The resulting expression $\Gamma(24,1)i_0= w_{desired}$ was proven to be a valid solution in question \ref{sec:question1}. This concludes the proof.
 
 \section{Question 4} \label{sec:question4}
 We now formulate the problem as an optimization problem.
 
 \begin{equation}
 \begin{array}{ll@{}ll}
-\text{minimize}  & P(i)=i(x)^TRi(x)\\
+\text{minimize}  & P(i(x))=i(x)^TRi(x)\\
 \text{subject to}& \Gamma(p_x,p_z)i(x)=w_{desired}
 \end{array}
 \end{equation}
-Note that, all solutions from question \ref{sec:question3} are parameterized in $x$ and they satisfy the constraint $\Gamma(p_x,p_z)i(x)=w_{desired} \forall x$. Therefore, the problem is an unconstrained optimization problem, since we can choose $x \in \mathbb(R)^4$. 
+Note that, all solutions from question \ref{sec:question3} are parameterized in $x$ and they satisfy the constraint $\Gamma(p_x,p_z)i(x)=w_{desired}\text{ } \forall x$. Therefore, the problem is an unconstrained optimization problem, since we can choose $x \in \mathbb{R}^4$. 
 
-\section{Question 5}
-\cite{minimax}
+
+\section{Question 5} \label{sec:question5}
+Let us define $\eta = \text{Ker}(\Gamma)$. We are able to perform unconstrained optimization on $P(i(x)) = (i_0+\eta x)^T R (i_0+\eta x)$. To find the optimal solution $i_{com}$, we first compute the derivative of $P(i(x))$ and find for which $x^*$ the derivative equals zero. Then we compute $i_{com} = i_0 + \eta x^*$.
+
+To find the derivative of $P(i(x))$, we substitute $x = x+h$ and all terms linear in $h$, will determine the derivative of $P(i(x))$.
+\begin{align}
+    P(i(x)) &= i_0^T R i_0 + i_0^T R \eta x + x^T\eta^TR i_0 + x^T\eta^T R \eta x \\
+    P(i(x+h))& = i_0^T R i_0 + i_0^T R \eta (x+h) + (x+h)^T\eta^TR i_0 + (x+h)^T\eta^T R \eta (x+h) 
+\end{align}
+
+The terms linear in $h$ now determine $\frac{\partial}{\partial x}P(i(x))$
+\begin{align}
+    \frac{\partial}{\partial x}P(i(x)) &= 2 \eta^T R i_0 + 2\eta^T R \eta x  \\
+    &= 2 r_0(\eta^T i_0+\eta^T \eta x)
+\end{align}
+Equating the derivative to zero yields the solution $x^* = -(\eta^T\eta)^{-1}\eta^T i_0 = -\eta^T i_0$, since $\eta^T\eta = I$. It is now possible to find the optimal commutation current vector
+\begin{equation} \label{eq:i_com1}
+    i_{com} = i_0 - \eta \eta^T i_0
+\end{equation}
+
+
+
+
+\section{Question 6} \label{sec:question6}
+It is now possible to determine $i_{com}$ explicitly in our favourite point $p_x=24 \text{mm}$. Using that $\eta = \text{Ker}(\Gamma(24,1))$ and $i_0$ is the value from (\ref{eq:i_0}), $i_{com} = \begin{bmatrix}
+   -0.19 & 
+   -0.25 &
+    0.47 &
+   -0.25 &
+   -0.23 &
+    0.51 &
+   -0.30 
+\end{bmatrix}^T$. The corresponding minimal power equals $i_{com}^T R i_{com} = 5.1 \text{W}$, which is small.
+
+The Matlab routine \textit{fmincon} was used to find a numerical solution to the optimization problem. This checks that the solution found in (\ref{eq:i_com1}) is indeed valid. \textit{fmincon} was used to minimize $P(i(x))$ for the variable $x$ with no constraints applied. The solution was equal to the $x^*$ found in question \ref{sec:question5} and hence the same optimal commutation current vector $i_{com}$ was found.
+
+
+\section{Question 7} \label{sec:question7}
+The problem is written as an optimization problem
+\begin{equation}
+\begin{array}{ll@{}ll}
+\text{minimize}  & \text{max}(|i_1(x)|,|i_2(x)|,...,|i_k(x)|) \text{ for } k = 1,...,K\\
+\text{subject to}& \Gamma(p_x,p_z)i(x)=w_{desired}
+\end{array}
+\end{equation}
+
+In question \ref{sec:question3}, all solution were found that satisfy the constraint $\Gamma(p_x,p_z)i(x)=w_{desired}$ and thus it is possible to perform unconstrained optimization again. However, the max function is a non-linear function and it is possible to convert the optimization problem with a method from \cite{minimax}. The method introduces a new variable as the objective function and the functions $i_k(x)$ are moved to the constraints. The new optimization problem then becomes
+
+\begin{equation}
+\begin{array}{ll@{}ll}
+\text{minimize}  & z \\
+\text{subject to}& -z \leq i_0 + \eta(p_x,p_z)x \leq z
+\end{array}
+\end{equation}
+which is in its standard form
+\begin{equation} \label{eq:minimax}
+\begin{array}{ll@{}ll}
+\text{minimize}  & z \\
+\text{subject to}& i_0 + \eta(p_x,p_z)x -z \leq 0 \\
+                  &-i_0 - \eta(p_x,p_z)x -z \leq 0
+\end{array}
+\end{equation}
+The resulting optimization problem in (\ref{eq:minimax}) contains a linear objective function and linear constraint function. This is solvable using the Matlab routine \textit{fmincon}.
 
 \bibliographystyle{IEEEtran}
 \bibliography{bib}
